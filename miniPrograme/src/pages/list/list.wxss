@@ -1,9 +1,0 @@
-/* pages/list/list.wxss */
-.list-item{
-    margin-bottom: 10rpx;
-    border: 1rpx solid #ccc;
-    text-align: center;
-}
-.item-name{
-    padding-bottom: 8rpx;
-}
