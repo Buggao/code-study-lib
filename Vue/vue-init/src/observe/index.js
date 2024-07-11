@@ -1,6 +1,6 @@
 /**
  * 响应式核心
- * 但目前写法性能差,：
+ * 但目前写法性能差：
  * - 对多层对象进行遍历；
  * - 数组则每一项都会添加get set方法
  * - 且数组长度更新是无法引起监听的
@@ -32,7 +32,7 @@ class Observe {
 }
 
 /**
- * 对象使用defineproperty 重写
+ * 使用defineproperty 绑定set get方法，实现监听
  */
 function defineReactive(key, data, value) {
   //对于嵌套对象处理
@@ -43,7 +43,7 @@ function defineReactive(key, data, value) {
     },
     set(newValue) {
       if(newValue !== value) {
-        //如果重新赋值对象
+        //如果set的是一个对象，则对这个对象也进行监听
         observe(newValue)
         value = newValue
       }
@@ -52,7 +52,7 @@ function defineReactive(key, data, value) {
 }
 
 export default function observe(data) {
-  // 只有对象进入下一层
+  // 只有对象才会绑定响应式
   if( typeof data !== "object" || data === null) return 
   new Observe(data)
 }

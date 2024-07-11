@@ -4,7 +4,7 @@ export default function initState(vm) {
   //读取配置信息
   const options = vm.$options
 
-  //判断vue包含的数据类型·
+  //判断options中包含的数据, 包含data则调用处理data的函数
   if(options.data) {
     initData(vm);
   }
@@ -16,5 +16,5 @@ function initData(vm) {
   //如果 data是函数则拿函数的返回值，如果是object，直接使用
   data = typeof data === "function" ? data.call(vm) : data;
   //调用产生响应式的函数
-  observe(data)
+  observe(data);
 }

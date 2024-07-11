@@ -23,7 +23,7 @@ let methods = [
 methods.forEach(method => {
   //重写方法
   rebuildArrayPrototype[method] = function(...args) {
-    arrayPrototye[method].call(this, ...args)
+    arrayPrototye[method].call(this, ...args);
   }
 })
 
