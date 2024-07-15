@@ -59,9 +59,25 @@
     //重写方法
     rebuildArrayPrototype[method] = function () {
       var _arrayPrototye$method;
+      var inserted;
+      var __observe__ = this.__observe__;
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
+      switch (method) {
+        case "push":
+        case "unshift":
+          inserted = args;
+          break;
+        case "splice":
+          inserted = args.slice(2);
+      }
+      if (inserted) {
+        __observe__.observeArray(inserted);
+      }
+      //需要做的是，重新调用这些方法时，也变成响应式的
+      console.log("re build array", this);
+      // this上保存着 构造方法的实例，所以可以访问
       (_arrayPrototye$method = arrayPrototye[method]).call.apply(_arrayPrototye$method, [this].concat(args));
     };
   });
@@ -70,28 +86,43 @@
   var Observe = /*#__PURE__*/function () {
     function Observe(data) {
       _classCallCheck(this, Observe);
+      Object.defineProperty(data, "__observe__", {
+        value: this,
+        enumerable: false
+      });
       if (Array.isArray(data)) {
         data.__proto__ = rebuildArrayPrototype;
+        // 将监听的数据也变成响应式的
+        this.observeArray(data);
       } else {
         //遍历data的数据
         this.walk(data);
       }
     }
+    // 数组的监听响应式
     return _createClass(Observe, [{
+      key: "observeArray",
+      value: function observeArray(data) {
+        data.forEach(function (item) {
+          return observe(item);
+        });
+      }
+      // 对象遍历监听
+    }, {
       key: "walk",
       value: function walk(data) {
         //不使用for in是为了避免访问到原型上的数据
         var keys = Object.keys(data);
         keys.forEach(function (key) {
-          defineReactive(key, data, data[key]);
+          defineReactive(data, key, data[key]);
         });
       }
     }]);
   }();
   /**
-   * 对象使用defineproperty 重写
+   * 使用defineproperty 绑定set get方法，实现监听
    */
-  function defineReactive(key, data, value) {
+  function defineReactive(data, key, value) {
     //对于嵌套对象处理
     observe(value);
     Object.defineProperty(data, key, {
@@ -100,7 +131,7 @@
       },
       set: function set(newValue) {
         if (newValue !== value) {
-          //如果重新赋值对象
+          //如果set的是一个对象，则对这个对象也进行监听
           observe(newValue);
           value = newValue;
         }
@@ -108,8 +139,10 @@
     });
   }
   function observe(data) {
-    // 只有对象进入下一层
+    // 只有对象才会绑定响应式
     if (_typeof(data) !== "object" || data === null) return;
+    // 如果被代理也直接返回
+    if (data.__observe__) return;
     new Observe(data);
   }
 
@@ -117,7 +150,7 @@
     //读取配置信息
     var options = vm.$options;
 
-    //判断vue包含的数据类型·
+    //判断options中包含的数据, 包含data则调用处理data的函数
     if (options.data) {
       initData(vm);
     }
@@ -128,14 +161,33 @@
     var data = vm.$options.data;
     //如果 data是函数则拿函数的返回值，如果是object，直接使用
     data = typeof data === "function" ? data.call(vm) : data;
+    // 用户可以直接通过vm.XXX 或者vm._data.XXX直接访问数据
+    for (var key in data) {
+      proxy(vm, "_data", key);
+    }
     //调用产生响应式的函数
     observe(data);
+    // 代理options中的data
+    function proxy(data, source, key) {
+      Object.defineProperty(data, key, {
+        get: function get() {
+          return data[source][key];
+        },
+        set: function set(newValue) {
+          vm[source][key] = newValue;
+        }
+      });
+    }
   }
 
   function initMixin(Vueact) {
     Vueact.prototype._init = function (options) {
       var vm = this;
-      //vue的特性是可以访问options，所以把配置项添加到对象上，此时vm可以全局访问，因此options也可以全局访问
+      /**
+       * vue2有一个特性是特性是可以 通过实例的$options访问到配置信息，
+       * 所以把配置项添加到对象上
+      */
+
       vm.$options = options;
 
       /**
@@ -146,15 +198,15 @@
        * 当然具体逻辑放入到新的文件中处理
        */
 
-      //调用数据处理函数
+      //调用处理数据的函数
       initState(vm);
     };
   }
 
   /**
-   * 因为vue中不同属性在不同文件中，
-   * 而在es6中所有的方法都推荐在class中完成,
-   * 不推荐使用prototype的形式.
+   * 在vue2中 不通处理模块使用function的方式集合
+   * 而在es6中所有的方法都推荐写在class内,
+   * 不推荐混合使用prototype的形式.
    * 所以vue2依然使用构造函数的方式
   */
 
@@ -162,7 +214,10 @@
     this._init(options);
   }
 
-  //为了方便维护，每个属性都使用单独文件，这里通过initMixin讲init函数挂载至Vueact上，因此可以使用
+  /**
+   * 为了方便维护，每个属性都使用单独文件，
+   * 这里通过initMixin讲init函数挂载至Vueact上
+  */
   initMixin(Vueact);
 
   return Vueact;
