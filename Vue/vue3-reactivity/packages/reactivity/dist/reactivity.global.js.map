@@ -1,0 +1,1 @@
+{"version":3,"file":"reactivity.global.js","sources":["../src/index.ts"],"sourcesContent":["export function demo() {\r\n  const version = \"1.0\";\r\n  console.log(version);\r\n}"],"names":[],"mappings":";;;WAAgB,IAAI,GAAA;MAClB,MAAM,OAAO,GAAG,KAAK,CAAC;EACtB,IAAA,OAAO,CAAC,GAAG,CAAC,OAAO,CAAC,CAAC;EACvB;;;;;;;;;;"}

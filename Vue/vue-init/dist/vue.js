@@ -180,6 +180,48 @@
     }
   }
 
+  // TODO:正则表达式学习
+  // 检测标签 
+  var ncname = "[a-zA-Z_][\\-\\.0-9_a-zA-Z]*";
+  // `((?:[a-zA-Z_][\\-\\.0-9_a-zA-Z]*\\:)?[a-zA-Z_][\\-\\.0-9_a-zA-Z]*)`
+  var qnameCapture = "((?:".concat(ncname, "\\:)?").concat(ncname, ")");
+  // 检测标签开头
+  var startTagOpen = new RegExp("^<".concat(qnameCapture));
+
+  // 负责将模板解析为AST语法树
+  function parseHtml(html) {
+
+    //此时要不断循环html 一直截取到html为空
+    var _loop = function _loop() {
+      // indexOf 返回所需匹配字符的第一个下标 没有则为-1
+      var ishtmlEnd = html.indexOf("<");
+      // 默认开头为 <div> 所以 isHtmlEnd 应该为 0
+      if (ishtmlEnd == '0') {
+        parseStartTag(html);
+        return 1; // break
+      }
+
+      // 解析开始标签
+      function parseStartTag(html) {
+        // match 按照正则匹配字符串 无匹配结果返回null 有值则返回个包含匹配内容和方法的数组
+        var startTagMatches = html.match(startTagOpen);
+        if (startTagMatches) {
+          ({
+            tagName: startTagMatches[1]
+          });
+        }
+        console.log(startTagMatches);
+      }
+    };
+    while (html) {
+      if (_loop()) break;
+    }
+  }
+  function compileFunction(template) {
+    console.log(template);
+    parseHtml(template);
+  }
+
   function initMixin(Vueact) {
     Vueact.prototype._init = function (options) {
       var vm = this;
@@ -200,6 +242,29 @@
 
       //调用处理数据的函数
       initState(vm);
+
+      //将vue options中的模板渲染
+      if (vm.$options.el) {
+        vm.$mount(vm.$options.el);
+      }
+    };
+    // 挂载函数
+    Vueact.prototype.$mount = function (el) {
+      var options = this.$options;
+      var elDom = document.querySelector(el);
+      /**
+       * 如果有rander 则使用rander的内容
+       * 如果有template 则直接使用template
+       * 两个都无 则使用 el
+       */
+      if (!options.rander) {
+        var template = options.template;
+        if (!template) {
+          template = elDom.outerHTML;
+        }
+        var render = compileFunction(template);
+        options.render = render;
+      }
     };
   }
 
