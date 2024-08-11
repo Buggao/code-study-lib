@@ -12,7 +12,7 @@ function createGetter(isReadonly = false, isShallow = false) {
   return function get(_target: any, _key: any, _recevier: any){
     console.log("用户取值了", _target, _key, _recevier);
     const res = Reflect.get(_target, _key, _recevier)
-    // 收集该数据的依赖
+    // vue内部对跟踪的函数进行的操作
     track(_target, "123get", _key);
     // 如果不是浅代理 且 取值是个对象，则递归
     if( !isShallow && isObject(res)) {
@@ -29,11 +29,11 @@ function createSetter(isShallow = false) {
     console.log("用户设置值了", _target, _key, _value, _recevier);
     let oldValue = _target[_key];
     // 如果旧值 === 新值 则返回 在进行数组操作时 最后更改数组的长度值是不会修改的
-
-    // 判断是新增还是修改
-    // 如果是数组且key为一个字符型数字(增加长度) 则判断是否小于数组的长度 
-    // 如果大于则是新增长度 实际上target没有变
-    // 其次判断对象上是否有该属性 判断是新增还是修改
+    /**
+     * 判断是否为数组 且 此时key为一个数值 hadKey = isArray(_target) && isIntegeKey(_key) 
+     * 如果不是数组或值不为key，说明是对象或新增数组元素 则执行hasOwn 判断有没有该属性 得知是否为新增
+     * 如果是数组，且此时key小于数组的长度 说明也是新增
+     */
     let hadKey = isArray(_target) && isIntegeKey(_key) ? Number(_key)<_target.length : hasOwn(_target, _key)
     // 如果设置失败 Reflect返回为false 否则为true 与proxy的set必须返回boolean值相符合
     const res = Reflect.set(_target, _key, _value, _recevier);

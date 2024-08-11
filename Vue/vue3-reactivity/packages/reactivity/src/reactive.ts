@@ -31,14 +31,14 @@ const readonlyWeakMap = new WeakMap();
  * @param isReadonly 是否只读
  * @param baseHanle 处理函数
  */
-function ceateReactiveObject(target: any, isReadonly: boolean, baseHanler: ProxyHandler<any>) {
+function ceateReactiveObject(target: any, isReadonly: boolean, baseHandler: ProxyHandler<any>) {
   // 核心， 类似与柯里化的应用，缩小应用范围
   if(!isObject(target)) return target
   // readonly 使用两套weakMap
   const proxyMap = isReadonly ? reactiveWeakMap : readonlyWeakMap
   // 已经被代理则返回proxy代理对象
   if(proxyMap.has(target)) return target
-  const proxy = new Proxy(target, baseHanler);
+  const proxy = new Proxy(target, baseHandler);
   proxyMap.set(target, proxy)
   return proxy;
 }
