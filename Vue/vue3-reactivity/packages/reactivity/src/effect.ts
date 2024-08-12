@@ -6,7 +6,7 @@ export function effect(fn:any, options:any = {}) {
 }
 
 const effectStack: any[] = [];
-export let activeEffect: any = null;
+export let activeEffect: any = void(0);
 let id = 0; 
 
 function createReactiveEffect( _fn: any, _options: any) {
@@ -67,5 +67,20 @@ export function track(target: any, type: any, key: any) {
 }
 
 export function trigger(target: any, type: any, key: any, newValue:any, oldValue:any) {
-  console.log(123);
+  const depsMap = targetMap.get(target)
+  // 如果没有该值 返回
+  if(!depsMap) return
+  // 创建一个新的set 用于筛选effect（可能多次触发trigget 所以可能会有重复的effect）
+  const effectSet = new Set();
+  function addEffects(effects: any){
+    if(effects) {
+      effects.forEach( (effect:any) => {
+        effectSet.add(effect)
+      });
+    }
+  }
+  // 如果有 值为对象所对应的所有effect关系的 Map 则继续取属性
+  addEffects(depsMap.get(key));
+  effectSet.forEach((effect: any) => effect());
+  console.log("You are in trigger");
 }

@@ -8,17 +8,28 @@
 <body>
   <center>
     <h1> My Vue3 </h1>
+    <button id="changeAgeBtn">Change age</button>
   </center>
   <script src="../packages/reactivity/dist/reactivity.global.js"></script>
   <script>
     let { reactive, shallowReactive, readonly, shallowReadonly, effect } = reactivity
-    let demoObj = reactive({'abc':123})
-    let demoArray = reactive( [1,2,3]);
+    let info = { name: "Ton", age: 22, address: {country: "China", address:{city:"ShangHai", street: "长江南路"}}}
+    let proxy = reactive(info);
+
 
     effect(() => {
-      console.log("effect is running, demoObj.abc", demoObj.abc);
+      console.log(proxy.name)
     })
-
+    document.getElementById("changeAgeBtn").addEventListener("click", function(){
+      proxy.age = 24
+      proxy.profession = "coder"
+    })
+    setTimeout(() => {
+      proxy.name = "Gton";
+      proxy.name = "gTon";
+      proxy.name = "gton";
+      proxy.name = "GTon";
+    }, 1500);
   </script>
 </body>
 </html>

@@ -26,7 +26,7 @@ function createGetter(isReadonly = false, isShallow = false) {
 function createSetter(isShallow = false) {
   return function set(_target: any, _key: any, _value: any, _recevier: any){
     // set有两种情况：1、新增属性；2、修改属性
-    console.log("用户设置值了", _target, _key, _value, _recevier);
+    console.log("用户设置值了", _key, _value);
     let oldValue = _target[_key];
     // 如果旧值 === 新值 则返回 在进行数组操作时 最后更改数组的长度值是不会修改的
     /**
@@ -37,10 +37,11 @@ function createSetter(isShallow = false) {
     let hadKey = isArray(_target) && isIntegeKey(_key) ? Number(_key)<_target.length : hasOwn(_target, _key)
     // 如果设置失败 Reflect返回为false 否则为true 与proxy的set必须返回boolean值相符合
     const res = Reflect.set(_target, _key, _value, _recevier);
-    if(hadKey) {
-      trigger(_target, "234get567", _key, _value, _recevier)
+    if(!hadKey) {
+      trigger(_target, "234get567", _key, _value, _recevier);
       console.log("新增")
     }else if(isChanged(oldValue, _value)) {
+      trigger(_target, "234get567", _key, _value, _recevier);
       console.log("值修改了");
     }
     return res

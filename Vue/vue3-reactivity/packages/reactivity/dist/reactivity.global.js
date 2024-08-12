@@ -24,7 +24,7 @@ var reactivity = (function (exports) {
       return effect;
   }
   const effectStack = [];
-  exports.activeEffect = null;
+  exports.activeEffect = void (0);
   let id = 0;
   function createReactiveEffect(_fn, _options) {
       // 处理effect的多层嵌套,使用数组(栈)的方法来解决
@@ -82,7 +82,23 @@ var reactivity = (function (exports) {
       console.log(targetMap);
   }
   function trigger(target, type, key, newValue, oldValue) {
-      console.log(123);
+      const depsMap = targetMap.get(target);
+      // 如果没有该值 返回
+      if (!depsMap)
+          return;
+      // 创建一个新的set 用于筛选effect（可能多次触发trigget 所以可能会有重复的effect）
+      const effectSet = new Set();
+      function addEffects(effects) {
+          if (effects) {
+              effects.forEach((effect) => {
+                  effectSet.add(effect);
+              });
+          }
+      }
+      // 如果有 值为对象所对应的所有effect关系的 Map 则继续取属性
+      addEffects(depsMap.get(key));
+      effectSet.forEach((effect) => effect());
+      console.log("You are in trigger");
   }
 
   // 使用函数柯里化的方式整合一个get和set的创建方式
@@ -95,7 +111,7 @@ var reactivity = (function (exports) {
       return function get(_target, _key, _recevier) {
           console.log("用户取值了", _target, _key, _recevier);
           const res = Reflect.get(_target, _key, _recevier);
-          // 收集该数据的依赖
+          // vue内部对跟踪的函数进行的操作
           track(_target, "123get", _key);
           // 如果不是浅代理 且 取值是个对象，则递归
           if (!isShallow && isObject(res)) {
@@ -108,21 +124,23 @@ var reactivity = (function (exports) {
   function createSetter(isShallow = false) {
       return function set(_target, _key, _value, _recevier) {
           // set有两种情况：1、新增属性；2、修改属性
-          console.log("用户设置值了", _target, _key, _value, _recevier);
+          console.log("用户设置值了", _key, _value);
           let oldValue = _target[_key];
           // 如果旧值 === 新值 则返回 在进行数组操作时 最后更改数组的长度值是不会修改的
-          // 判断是新增还是修改
-          // 如果是数组且key为一个字符型数字(增加长度) 则判断是否小于数组的长度 
-          // 如果大于则是新增长度 实际上target没有变
-          // 其次判断对象上是否有该属性 判断是新增还是修改
+          /**
+           * 判断是否为数组 且 此时key为一个数值 hadKey = isArray(_target) && isIntegeKey(_key)
+           * 如果不是数组或值不为key，说明是对象或新增数组元素 则执行hasOwn 判断有没有该属性 得知是否为新增
+           * 如果是数组，且此时key小于数组的长度 说明也是新增
+           */
           let hadKey = isArray(_target) && isIntegeKey(_key) ? Number(_key) < _target.length : hasOwn(_target, _key);
           // 如果设置失败 Reflect返回为false 否则为true 与proxy的set必须返回boolean值相符合
           const res = Reflect.set(_target, _key, _value, _recevier);
-          if (hadKey) {
-              trigger();
+          if (!hadKey) {
+              trigger(_target, "234get567", _key);
               console.log("新增");
           }
           else if (isChanged(oldValue, _value)) {
+              trigger(_target, "234get567", _key);
               console.log("值修改了");
           }
           return res;
@@ -181,7 +199,7 @@ var reactivity = (function (exports) {
    * @param isReadonly 是否只读
    * @param baseHanle 处理函数
    */
-  function ceateReactiveObject(target, isReadonly, baseHanler) {
+  function ceateReactiveObject(target, isReadonly, baseHandler) {
       // 核心， 类似与柯里化的应用，缩小应用范围
       if (!isObject(target))
           return target;
@@ -190,16 +208,42 @@ var reactivity = (function (exports) {
       // 已经被代理则返回proxy代理对象
       if (proxyMap.has(target))
           return target;
-      const proxy = new Proxy(target, baseHanler);
+      const proxy = new Proxy(target, baseHandler);
       proxyMap.set(target, proxy);
       return proxy;
   }
 
+  function Ref(_value) {
+      return createRef(_value);
+  }
+  function shallowRef(_value) {
+      return createRef(_value, true);
+  }
+  // 非shallow判断是不是对象 如果是对象则直接包裹一层reactive 否则返回该值
+  const convert = (_value) => isObject(_value) ? reactive(_value) : _value;
+  class RefImpl {
+      constructor(rawValue, isShallow) {
+          this.rawValue = rawValue;
+          this._value = isShallow ? rawValue : convert(rawValue);
+      }
+      get() {
+          track(this, "get", "value");
+      }
+      set(newValue) {
+          trigger(this, "set", "value", newValue, this.rawValue);
+      }
+  }
+  function createRef(_value, isShallow = false) {
+      return new RefImpl(_value, isShallow);
+  }
+
+  exports.Ref = Ref;
   exports.effect = effect;
   exports.reactive = reactive;
   exports.readonly = readonly;
   exports.shallowReactive = shallowReactive;
   exports.shallowReadonly = shallowReadonly;
+  exports.shallowRef = shallowRef;
   exports.track = track;
   exports.trigger = trigger;
 
