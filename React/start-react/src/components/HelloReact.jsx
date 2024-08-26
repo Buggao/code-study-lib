@@ -1,30 +1,28 @@
-import React, { Component } from "react"
+import { useState, useEffect } from "react"
 
-export class HelloReact extends Component {
-  constructor() {
-    super();
-    this.state = {
-      number: 1
+export default function HelloReact() {
+  let  [number, setNumber] = useState(0);
+
+  useEffect(() => {
+    let stopTimer = setTimeout(() => {
+      console.log("stopTImer");
+    }, 1000)
+    return () => {
+      clearTimeout(stopTimer)
     }
-  }
+  });
 
-  addCount = () => {
-    this.setState( {
-      number: this.state.number + 1
-    })
+  const addCount = () => {
+    setNumber(number + 1)
   }
-
-  render(){
-    return (
-      <>
-        <h1>Hello React component.</h1>
-        <div style={{display: "flex", flexFlow: "nowrap row"}}>
-          <div>count is:</div>
-          <div>{this.state.number}</div>
-          <hr/>
-          <button onClick={this.addCount}>add</button>
-        </div>
-      </>
-    )
-  }
+  return (
+    <>
+    <h1>Hello React component.</h1>
+    <div style={{display: "flex", flexFlow: "nowrap row"}}>
+      <div>count is:</div>
+      <div>{number}</div>
+      <button onClick={addCount}>add</button>
+    </div>
+  </>
+  )
 }
