@@ -1,0 +1,1 @@
+{"version":3,"file":"runtime-dom.cjs.js","sources":["../src/index.ts"],"sourcesContent":["export default {\r\n  name: \"runtime dom\"\r\n}"],"names":[],"mappings":";;AAAA,YAAe;AACb,IAAA,IAAI,EAAE,aAAa;CACpB;;;;"}

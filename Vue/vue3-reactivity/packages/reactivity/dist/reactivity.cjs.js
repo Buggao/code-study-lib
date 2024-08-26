@@ -18,8 +18,9 @@ function hasOwn(target, key) {
 function effect(fn, options = {}) {
     // TODO 为什么这里有这么return？？
     const effect = createReactiveEffect(fn, options);
-    if (!options.lazy)
+    if (!options.lazy) {
         effect();
+    }
     return effect;
 }
 const effectStack = [];
@@ -96,7 +97,15 @@ function trigger(target, type, key, newValue, oldValue) {
     }
     // 如果有 值为对象所对应的所有effect关系的 Map 则继续取属性
     addEffects(depsMap.get(key));
-    effectSet.forEach((effect) => effect());
+    effectSet.forEach((effect) => {
+        let hasSchedular = effect.options.schedular;
+        if (hasSchedular) {
+            hasSchedular(effect);
+        }
+        else {
+            effect();
+        }
+    });
     console.log("You are in trigger");
 }
 
@@ -235,14 +244,70 @@ class RefImpl {
 function createRef(_value, isShallow = false) {
     return new RefImpl(_value, isShallow);
 }
+/**
+ * 调用时 target 为一个reactive对象 name为key
+ */
+class ObjectRefImpl {
+    constructor(target, key) {
+        this.target = target;
+        this.key = key;
+    }
+    get value() {
+        return this.target[this.key];
+    }
+    set value(newValue) {
+        this.target[this.key] = newValue;
+    }
+}
+function toRef(target, key) {
+    return new ObjectRefImpl(target, key);
+}
+function toRefs(target) {
+    const res = Array.isArray(target) ? new Array(target.length) : {};
+    for (const key in res) {
+        res[key] = toRef(target, key);
+    }
+}
+
+class ComputedRefImpl {
+    constructor(getter, setter) {
+        this.getter = getter;
+        this.setter = setter;
+        this.effect = effect(getter, { lazy: true, schedular: (effect) => {
+                console.log("123");
+            } });
+    }
+    get value() {
+        this._value = this.effect();
+        return this._value;
+    }
+    set value(newValue) {
+        this.setter(newValue);
+    }
+}
+function computed(getterOrOptions) {
+    let getter, setter;
+    if (isObject(getterOrOptions)) {
+        getter = getterOrOptions.get;
+        setter = getterOrOptions.set;
+    }
+    else {
+        getter = getterOrOptions;
+        setter = () => { console.warn("computer don`t have setter."); };
+    }
+    return new ComputedRefImpl(getter, setter);
+}
 
 exports.Ref = Ref;
+exports.computed = computed;
 exports.effect = effect;
 exports.reactive = reactive;
 exports.readonly = readonly;
 exports.shallowReactive = shallowReactive;
 exports.shallowReadonly = shallowReadonly;
 exports.shallowRef = shallowRef;
+exports.toRef = toRef;
+exports.toRefs = toRefs;
 exports.track = track;
 exports.trigger = trigger;
 //# sourceMappingURL=reactivity.cjs.js.map

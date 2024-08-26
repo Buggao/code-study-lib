@@ -61,6 +61,7 @@ const outputConfig = {
 
 function createConfig(format, output) {
   output.sourcemap = true,
+  output.extend = true,
   output.name = name
   return  {
     //  入口文件

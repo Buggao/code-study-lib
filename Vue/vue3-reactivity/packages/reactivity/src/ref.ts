@@ -29,3 +29,30 @@ class RefImpl {
 function createRef(_value: any, isShallow = false) {
   return new RefImpl(_value, isShallow)
 }
+
+
+/**
+ * 调用时 target 为一个reactive对象 name为key
+ */
+class ObjectRefImpl{
+  constructor(public target:any, public key: any) {
+
+  }
+  get value() {
+    return this.target[this.key]
+  }
+  set value(newValue) {
+    this.target[this.key] = newValue
+  }
+}
+
+export function toRef(target: any, key: any) {
+  return new ObjectRefImpl(target, key)
+}
+
+export function toRefs(target: any) {
+  const res: any = Array.isArray(target) ? new Array(target.length) : {}
+  for(const key in res) {
+    res[key] = toRef(target, key)
+  }
+}

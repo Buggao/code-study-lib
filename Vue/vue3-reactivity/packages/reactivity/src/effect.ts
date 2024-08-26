@@ -1,7 +1,10 @@
 export function effect(fn:any, options:any = {}) {
   // TODO 为什么这里有这么return？？
   const effect =  createReactiveEffect(fn, options);
-  if(!options.lazy) effect();
+  if(!options.lazy) {
+    effect();
+    
+  }
   return effect
 }
 
@@ -81,6 +84,14 @@ export function trigger(target: any, type: any, key: any, newValue:any, oldValue
   }
   // 如果有 值为对象所对应的所有effect关系的 Map 则继续取属性
   addEffects(depsMap.get(key));
-  effectSet.forEach((effect: any) => effect());
+  effectSet.forEach(
+    (effect: any) => {
+      let hasSchedular = effect.options.schedular
+      if(hasSchedular) {
+        hasSchedular(effect);
+      } else {
+        effect();
+      }
+    });
   console.log("You are in trigger");
 }

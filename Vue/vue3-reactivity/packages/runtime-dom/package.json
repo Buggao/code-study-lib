@@ -1,7 +1,6 @@
 {
-  "name": "example",
+  "name": "@myvue/runtimedom",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,8 +8,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@vue/reactivity": "^3.4.34",
-    "vue": "^3.4.38"
+  "description": "",
+  "buildOptions": {
+    "name": "MyVueRuntimeDOM",
+    "formats": [
+      "esm-bundler",
+      "cjs",
+      "iife"
+    ]
   }
 }

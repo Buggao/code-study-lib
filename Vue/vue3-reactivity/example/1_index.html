@@ -11,27 +11,17 @@
   <button id="changeAge">change age</button>
   <script src="./node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
   <script>
-    let { reactive, shallowReactive, readonly, shallowReadonly, effect } = VueReactivity;
-    // 一些vue3的api
-    // reactive 是最常用的api，他会监听深层对象
-    const personalInfo = { name: 'Ton', age: '23', address: {country: "China", province: "shanghai"}};
-    const proxy = reactive(personalInfo);
-
-    console.log(proxy)
-    // effect 是一个副作用函数 首次进入会执行一次 随后每次更改也会调用执行
-    effect(() => {
+    let { reactive, ref, toRef, computed } = VueReactivity;
+    let age = ref(12)
+    let res = computed({
+      get: () => age.value*2,
+      set: (newValue) => {
+        age.value = newValue
+      }
     })
-
-    document.getElementById("changeAge").addEventListener("click", function() {
-      proxy.age = 24
-      proxy.name = "GTon"
-      console.log(proxy)
-    })
-
-    setTimeout( () => { proxy.age = 25 },2000)
-    // shallowReactive 则是轻度监听 只监听第一层 这样做性能消耗低。
-    // readonly 则是只被代理，但是不能修改
-    // shallowReadonly 类似于 shallowReactive 只对第一层的有效。
+    console.log(res.value)
+    res.value = 38
+    console.log(res.value)
   </script>
 </body>
 </html>

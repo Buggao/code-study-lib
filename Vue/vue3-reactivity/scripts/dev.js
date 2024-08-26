@@ -13,4 +13,6 @@ async function build(targetPath) {
   )
 }
 
-build('reactivity')
+// build('reactivity')
+
+build('runtime-dom')

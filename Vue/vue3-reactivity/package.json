@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "@vue/reactivity": "^3.4.34",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vue": "3"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
