@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const MyInfo = ({ message, type = 'warning', onClose }) => {
+function MyInfo({ message, type = 'warning', onClose }) {
   const [isVisible, setIsVisible] = useState(true);
 
   // 处理关闭按钮点击事件
@@ -22,6 +22,14 @@ const MyInfo = ({ message, type = 'warning', onClose }) => {
       color: '#155724'
     }
   };
+
+  // 自动关闭 控制timer 避免重复调用useEffect
+  useEffect( () => {
+    const timer = setTimeout(() => {
+      setIsVisible(false)
+    }, 1000);
+    return () => clearTimeout(timer)
+  },[isVisible])
 
   // 当前的样式
   const currentStyle = alertStyles[type] || alertStyles.warning;

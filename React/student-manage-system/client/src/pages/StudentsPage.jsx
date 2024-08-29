@@ -12,7 +12,6 @@ export default function StudentsPage() {
 
   useEffect( () => {
     getStudentsListApi().then( res => { 
-      console.log("res is", res)
       let _studentArray = res.map( item => {
         return (
           <tr key={item.id} className="p-2 m-2 border" style={{margin: "8px", height: "40px", border: "1px solid #ccc"}}>
