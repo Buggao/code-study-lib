@@ -6,7 +6,7 @@ export function getStudentsListApi() {
     method: "get"
   })
 }
-
+// 添加学生
 export function addStudentApi(data) {
   return request( {
     url: "/students",
@@ -14,14 +14,14 @@ export function addStudentApi(data) {
     data
   })
 }
-
+// 获取学生信息
 export function getStudentByIdApi(id) {
   return request( {
     url: `/students/${id}`,
     method: "GET"
   })
 }
-
+// 删除学生信息
 export function delStudentByIdApi(id) {
   return request( {
     url: `/students/${id}`,

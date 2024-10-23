@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-function MyInfo({ message, type = 'warning', onClose }) {
-  const [isVisible, setIsVisible] = useState(true);
+function MyInfo({ isShow = false ,message, type = 'warning', onClose }) {
+  const [isVisible, setIsVisible] = useState(isShow);
 
   // 处理关闭按钮点击事件
   const handleClose = () => {
@@ -25,9 +25,13 @@ function MyInfo({ message, type = 'warning', onClose }) {
 
   // 自动关闭 控制timer 避免重复调用useEffect
   useEffect( () => {
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-    }, 1000);
+    console.log("isShow is", isVisible )
+    let timer;
+    if (isVisible) {
+      timer = setTimeout(() => {
+        setIsVisible(false)
+      }, 1000);
+    }
     return () => clearTimeout(timer)
   },[isVisible])
 

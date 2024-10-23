@@ -6,8 +6,13 @@ import MyInfo from '../components/MyInfo'
 export default function StudentsPage() {
   
   let [studentsList, setStudentsList] = useState([])
-  let  [searchValue, setSearchValue] = useState("")
-  
+  let [searchValue, setSearchValue] = useState("")
+  let [msgInfo, setMsgInfo ] = useState({
+    isShow: false,
+    message: "",
+    type: ""
+  })
+
   let location = useLocation();
 
   useEffect( () => {
@@ -32,7 +37,13 @@ export default function StudentsPage() {
   useEffect( () => {
     console.log("location", location)
     if(location && location.state) {
-
+      let infoPrpos = {
+        isShow:true,
+        message: location.state.message,
+        type: location.state.type
+      }
+      setMsgInfo(infoPrpos)
+      console.log("showInfo", infoPrpos)
     }
   }, [location])
 
@@ -42,7 +53,7 @@ export default function StudentsPage() {
 
   return (
     <section>
-      <MyInfo message="测试信息" type="success"/>
+      <MyInfo {...msgInfo}/>
       <header>
         <h1 className="font-black text-3xl">学生信息表</h1>
         <label className="w-full">搜索：
