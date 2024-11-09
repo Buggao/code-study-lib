@@ -21,7 +21,7 @@ export default function StudentsPage() {
         return (
           <tr key={item.id} className="p-2 m-2 border" style={{margin: "8px", height: "40px", border: "1px solid #ccc"}}>
             <td style={{padding: "0 8px", border: "1px solid #5f7f9f"}}>{item.name}</td>
-            <td style={{padding: "0 8px", border: "1px solid #5f7f9f"}}>{item.gender}</td>
+            <td style={{padding: "0 8px", border: "1px solid #5f7f9f"}}>{item.gender === "male" ? "男" : "女" }</td>
             <td style={{padding: "0 8px", border: "1px solid #5f7f9f"}}>{item.age}</td>
             <td style={{padding: "0 8px", border: "1px solid #5f7f9f"}}>{item.address}</td>
             <td style={{padding: "0 8px", border: "1px solid #5f7f9f"}}>
