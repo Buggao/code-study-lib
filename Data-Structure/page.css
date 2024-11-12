@@ -13,6 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* { box-sizing: border-box; margin: 0; padding: 0;}
+
+body {
+  background: #1e1e20;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -22,7 +28,6 @@ a:hover {
   color: #535bf2;
 }
 
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -30,7 +35,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #3b3b3b;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -42,6 +47,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -51,6 +57,35 @@ button:focus-visible {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #3b3b3b;
   }
+}
+
+.app {
+  min-height: 100vh;
+  padding: 80px;
+}
+
+.answer {
+  margin: 8px 0;
+}
+.answer-line {
+  padding: 5px 0;
+}
+
+.answer .list {
+  padding-left: 32px;
+}
+
+.paragraph {
+  margin: 28px 0;
+  padding: 18px;
+  border: 1px solid #ababab;
+}
+
+.info {
+  border-top: 1px solid #ababab;
+  margin: 8px 0;
+  padding: 5px 0;
+  color: #ababab;
 }
