@@ -1,14 +1,26 @@
-import { Button } from"antd";
+import { Layout } from 'antd';
+const { Header, Footer, Content } = Layout;
+import PageFooter from '@/components/page-footer';
+import NavHeader from '@/components/nav-header';
 import './App.css'
+
+import { RouterProvider } from 'react-router-dom'
+
+import router from './router.jsx'
 
 function App() {
   return (
-    <>
-      <h1 className="text-orange-300">Vite + React</h1>
-      <Button type="primary" autoInsertSpace={false}>
-        确定
-      </Button>
-    </>
+    <Layout>
+      <Header >
+        <NavHeader />
+      </Header>
+      <Content >
+        <RouterProvider router={router} />
+      </Content>
+      <Footer>
+        <PageFooter />
+      </Footer>
+    </Layout>
   )
 }
 
