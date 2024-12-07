@@ -81,6 +81,11 @@ button:focus-visible {
   margin: 28px 0;
   padding: 18px;
   border: 1px solid #ababab;
+  display: flex;
+}
+
+.left-part {
+  flex-basis: 50%;
 }
 
 .info {
@@ -88,4 +93,45 @@ button:focus-visible {
   margin: 8px 0;
   padding: 5px 0;
   color: #ababab;
+}
+
+pre {
+  background-color: #333;
+  border: 1px solid #ddd;
+  padding: 10px;
+  overflow-x: auto;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-size: 14px;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+code {
+  color: #f4f4f4;
+}
+
+/* 语法高亮颜色可以根据需要调整 */
+.language-js .keyword {
+  color: #007acc;
+}
+
+.language-js .string {
+  color: #ce9178;
+}
+
+.language-js .comment {
+  color: #6a9955;
+}
+
+.language-js .number {
+  color: #b5cea8;
+}
+
+.language-js .operator {
+  color: #d4d4d4;
+}
+
+/* 示例：为关键字添加颜色 */
+.language-js span.keyword {
+  color: #007acc;
 }
