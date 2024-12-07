@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
 function ReadingNotes() {
+
+  const navigate = useNavigate();
+
   // 定义阅读笔记数组对象
   const notes = [
     {
@@ -20,13 +25,17 @@ function ReadingNotes() {
       date: "2023-10-03"
     }
   ];
+  const handleNoteClick = (note, index) => {
+    navigate("/noteDetail", {state: {noteInfo: note, index:index}})
+  };
 
   return (
     <div className="reading-notes p-20">
       <h1>Reading Notes</h1>
       {notes.map((note, index) => (
         <div key={index} 
-          className="note-item my-5 cursor-pointer border border-solid border-slate-200 rounded-lg p-5 flex justify-between items-center shadow-md shadow-blue-800">
+          className="note-item my-5 cursor-pointer border border-solid border-slate-200 rounded-lg p-5 flex justify-between items-center shadow-md shadow-blue-800"
+          onClick={() => handleNoteClick(note, index)}>
           <div className="left">
             <h2>{note.title}</h2>
             <p>{note.content}</p>

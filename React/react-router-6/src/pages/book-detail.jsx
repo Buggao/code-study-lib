@@ -1,13 +1,18 @@
-import { useLocation } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 function BookDetail() {
-  const location = useLocation();
-  const {state } = location
-  console.log("BookDetail", state );
+  const params = useParams();
+  const [searchParmas, setParams]= useSearchParams();
+
+  console.log("params and search params", params, searchParmas.get("bookName"))
+  let bookName = searchParmas.get("bookName")
   return (
     <div className="text-center p-20">
       <h2>Book Detail</h2>
-      <p>Book Name:</p>
+      <p>book Id: {params.index}</p>
+      <p>Book Name: {bookName}</p>
+      <p>Book Author: {searchParmas.get("bookAuthor")}</p>
+      <button onClick={() => setParams({bookName: `${bookName}（已读）`, readedTiem: "2022-10-04"})}>修改图书名字</button>
     </div>
   );
 }

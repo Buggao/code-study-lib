@@ -43,7 +43,9 @@ const router = createBrowserRouter([
 ])
 ```
 配置好路由就可以直接通过 <a/>标签进行跳转，但存在缺陷 a标签会引起浏览刷新。
+
 <a href="/login">Login</a> 因为点击a标签浏览器会发送一个资源请求，并重新加载页面。
+
 React Router 提供了 Link 组件，该组件不会引起浏览器刷新。
 <Link className="w-32" to="/notes">Reading Notes</Link>
 
@@ -56,33 +58,63 @@ const handleItemClick = () => {
     navigate(`/bookDetail`);
 };
 ```
-使用这种方式也可以动态的传递一些参数
+## 传递参数
+### 使用useNavigate传递参数
 
       navigate(`/bookDetail`, {state: {bookName: name, bookAuthor: author} });
-在目标路由中通过使用useLocation获取参数
+  
+在目标页面中通过使用useLocation获取参数
+
 import { useLocation } from "react-router-dom";
   const location = useLocation();
   const {state } = location
 
-配置匹配规则
-  可以直接使用Route 添加路由
-  <Route path="/" element={<Home />} />
-  如果想要子路由就使用
-  <Route path="/" element={<App />}>
-    <Route path="/home" element={<Home />} />
-  </Route>
-  在Home组件中添加outlet占位
-  也可以使用 createBrowserRouter通过配置对象的方式配置路由
-  子路由也是使用outlet的方式
-路由跳转
-  路由跳转有三种方式：
-    - a标签 但是a标签会引起浏览器刷新
-    - Link标签 通过 import { Link } from "react-router-dom"; 用法与A标签一致 但是不会引起浏览器刷新
-    - navigate("tagetName", params) 适合点击跳转，并且可以传递参数
-传递参数
+navigate() 也可以传递一个负数，表示向后退几个页面。如果并没有这多页面时会没有效果
 
-  - navigate("tagetName", params)
-  - 动态路由
-    配置路由时后面添加 :VeriableName 可以把参数传递给对应页面
+可以使用navigate 或 to的时候添加动态参数的方式，url携带参数有两种方式
+一种为直接在url后拼接参数 /bookDetail/1
+另一种为url后拼接？并携带参数  /bookDetail？name=bookName&author=bookAuthor
+也可以两种都存在的形式
+如果需要动态路由就需要对 router的配置进行改动
+      {
+        path: "bookDetail/:bookId",
+        element: <BookDetail />,
+      },
+但添加动态路由后 如果不传参数就会无法匹配，同时动态参数可以携带多个。
+"bookDetail/:bookId/:index"
+如果使用动态路由，在目标页面就可以使用useParams获取参数
+import { useParams } from "react-router-dom";
+const params = useParams();
+ 传递的所有参数都会被params接收。
+ 如果想要使用？拼接参数 就需要使用useSearchParams
 
-  useLocation useParams useSearchParams
+ 执行useSearchParams() 返回两个值，一个为类数组对象SearchParams，另外一个为setParams的函数
+ 如果想要取用 就使用钩子函数返回的第一个值的get方法获取。
+  setParams的作用是可以去修改导航栏中的url的值，类似于修改location的作用。
+  
+      <button onClick={() => setParams({bookName: `${bookName}（已读）`})}>修改图书名字</button>
+
+  也可也添加新的参数，但是新增参数会替换掉原来的参数
+  例如：
+  bookDetail/6?bookName=禅与摩托车维修艺术&bookAuthor=Martin%20Fowler
+  执行 setParams({bookName: `${bookName}（已读）`, readedTiem: "2022-10-04"}) 后变为
+  bookDetail/6?bookName=禅与摩托车维修艺术（已读）&readedTiem=2022-10-04
+  且url会的路由会更新一次。
+
+
+# 什么是fiber架构
+
+
+# 数据路由
+在传统的路由模式中，路由跳转到加载流程是这样的：
+  点击跳转 =》 路由匹配 =》 匹配到的组件的生命周期 =》 调取数据接口 =》 渲染页面
+
+但数据路由的方式节省了几步
+
+  点击跳转 =》路由匹配
+              调用接口 =》 组件生命周期 =》 渲染页面 
+  
+但数据路由的匹配和调用接口是同步进行的。
+              
+
+

@@ -5,7 +5,7 @@ function BookListItem({ name, author}) {
 
   const navigate = useNavigate();
   const handleItemClick = () => {
-      navigate(`/bookDetail`, {state: {bookName: name, bookAuthor: author} });
+      navigate(`/bookDetail/${randomValue}?bookName=${name}&bookAuthor=${author}`);
   };
 
   return (
