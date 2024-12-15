@@ -4,9 +4,7 @@ import PageFooter from '@/components/page-footer';
 import NavHeader from '@/components/nav-header';
 import './App.css'
 
-import { RouterProvider } from 'react-router-dom'
-
-import router from './router.jsx'
+import { Outlet } from 'react-router-dom'
 
 function App() {
   return (
@@ -14,10 +12,10 @@ function App() {
       <Header >
         <NavHeader />
       </Header>
-      <Content >
-        <RouterProvider router={router} />
+      <Content className="min-h-96" >
+        <Outlet />
       </Content>
-      <Footer>
+      <Footer style={{textAlign: "center"}}>
         <PageFooter />
       </Footer>
     </Layout>

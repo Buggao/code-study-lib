@@ -1,17 +1,9 @@
-.nav-header {
-  display: flex;
-  flex-direction: row nowrap;
-}
-
 .logo {
-  height: 6em;
   background-image: url("../assets/nav-logo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.nav-header-nagvition {
-  display: flex;
-  font-color: #fff;
 }
