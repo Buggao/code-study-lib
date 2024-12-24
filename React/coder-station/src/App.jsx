@@ -1,5 +1,3 @@
-import { Layout } from 'antd';
-const { Header, Footer, Content } = Layout;
 import PageFooter from '@/components/page-footer';
 import NavHeader from '@/components/nav-header';
 import './App.css'
@@ -8,17 +6,17 @@ import { Outlet } from 'react-router-dom'
 
 function App() {
   return (
-    <Layout>
-      <Header >
+    <div className="coder-station-app-container">
+      <header className="coder-station-app-header">
         <NavHeader />
-      </Header>
-      <Content className="min-h-96" >
+      </header>
+      <main className="coder-station-app-main" >
         <Outlet />
-      </Content>
-      <Footer style={{textAlign: "center"}}>
+      </main>
+      <footer className="coder-station-app-footer">
         <PageFooter />
-      </Footer>
-    </Layout>
+      </footer>
+    </div>
   )
 }
 

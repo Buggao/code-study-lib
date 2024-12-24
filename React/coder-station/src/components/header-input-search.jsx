@@ -7,7 +7,7 @@ function HeaderInputSearch({ className }) {
     <div className={`header-input-search flex leading-none ${className}`}>
     <Space.Compact block>
       <Select
-            className="h-10"
+            className="h-9.8"
             defaultValue="lucy"
             style={{ width: 120 }}
             options={[
@@ -17,7 +17,7 @@ function HeaderInputSearch({ className }) {
               { value: 'disabled', label: 'Disabled', disabled: true },
             ]}
         />
-        <Search size="large" placeholder="请输入要搜索的内容" enterButton="搜索" />
+        <Search size="large" className="h-10" placeholder="请输入要搜索的内容" enterButton="搜索" />
     </Space.Compact>
     </div>
   );
