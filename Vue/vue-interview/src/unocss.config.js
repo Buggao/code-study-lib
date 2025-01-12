@@ -44,6 +44,6 @@ export default defineConfig({
     }),
   ],
   shortcuts: [
-    ['high-light-text', 'p-1 bg-purple-800 rounded-md'],
+    ['high-light-text-purple', 'p-1 bg-purple-800 rounded-md mx-0.5'],
   ],
 })

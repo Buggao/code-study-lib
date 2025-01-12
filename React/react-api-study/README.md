@@ -129,3 +129,33 @@ contentLevel 钩子
 ### React的钩子
 
 #### useRef
+
+#### useState
+
+useState的几项特性 ： 
+  - 惰性初始化
+  - 使用Object.is() 优化性能
+Object.is()
+      Object.is() 确定两个值是否为相同值。如果以下其中一项成立，则两个值相同：
+
+都是 undefined
+
+都是 null
+
+都是 true 或者都是 false
+
+都是长度相同、字符相同、顺序相同的字符串
+
+都是相同的对象（意味着两个值都引用了内存中的同一对象）
+
+都是 BigInt 且具有相同的数值
+
+都是 symbol 且引用相同的 symbol 值
+
+都是数字且
+
+都是 +0
+都是 -0
+都是 NaN
+都有相同的值，非零且都不是 NaN
+ - 减少渲染时创建函数的次数

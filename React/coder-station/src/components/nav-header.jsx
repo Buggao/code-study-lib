@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 import HeaderInputSearch from "./header-input-search"
 import UserAuth from "./user-auth"
-function NavHeader() {
+function NavHeader({openLoginModal}) {
 
 
   return (
@@ -23,7 +23,7 @@ function NavHeader() {
       <HeaderInputSearch className="flex-1 mx-10" />
       {/* 登录按钮 */}
       <div className="nav-header-login">
-        <UserAuth/>
+        <UserAuth openLoginModal={openLoginModal} />
       </div>
     </div>
   )
