@@ -210,6 +210,9 @@ function handleClick() {
 
 当子组件有根组件时（template有一个主标签），style和class会继承父组件中传递的数据，但当没有根标签时控制台会弹出警告，并不会继承。
 
-同时 也可以给多个标签继承
+同时 也可以给多个标签继承。在template中通过$attrs 可以获取到父组件传递过来的所有数据。
+
+而在script中的setup可以通过 useAttrs 获取到所有属性。
+
 
 # 依赖注入
