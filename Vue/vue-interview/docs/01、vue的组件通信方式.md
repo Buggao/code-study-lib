@@ -215,4 +215,74 @@ function handleClick() {
 而在script中的setup可以通过 useAttrs 获取到所有属性。
 
 
+# 插槽
+
+插槽就是给子组件传递模板的内容。
+
+父组件只需在子组件标签中添加需要传递的模板内容即可，而子组件中需要添加slot标签作为出口。
+
+传递的模板可以访问父组件的内容，但是无法访问子组件中的内容。
+
+```js
+  ...
+    const slotFatherString = ref("我是父组件传递给插槽的内容")
+    const handleSlotClick = () => {
+      slotFatherString.value = "我是父组件传递给插槽的内容, 父组件的函数改变了我"
+      console.log("父组件调用子组件的方法")
+    }
+  ...
+        <Slot>
+          <div>{{ slotFatherString }}</div>
+          <button @click="handleSlotClick">调用父组件的方法</button>
+        </Slot>
+  ...
+
+// 子组件的内容
+  ...
+    const handleSlotClick = () => {
+      slotFatherString.value = "我是父组件传递给插槽的内容, 子组件的函数改变了我"
+    }
+  ... 
+    <div class="m-2 p-8 border-dotted border-2 border-sky-500" v-bind="$attrs">
+      <slot></slot>
+    </div>
+  ...
+```
+
+vue的slot借鉴于原生的slot元素，但进行了扩展，下面是五种用法：
+
+### 默认插槽内容
+
+子组件中slot添加默认内容，当父组件不传递时，会显示默认内容
+
+### 带名字插槽
+
+父组件可以给子组件传递多个插槽，不同插槽用名字来区分，父组件传递时使用
+
+  <template v-slot:slotName></template> 
+  或：
+  <template #slotName></template>
+
+这里的名字时可以使用动态的字符（变量）： <template #[variableslotName]></template>
+
+子组件中则需要给slot加上name属性
+
+<slot name="slotName"></slot>
+
+当子组件的slot添加name则该slot仅会接收带对应名字插槽的内容。
+
+而子组件存在不带name的slot，则会接收父组件中不带template**或**<tamplate #defalut></tamplate> 中的内容（两者互斥）
+
+当父组件中传递模板时，在子组件中可以在template中访问$slots属性，并且可以通过$slots.slotName 判断是否传递了某个具名插槽。
+
+并且当想要在父组件中读取子组件的部分状态时，可以在子组件的slot上添加上子组件的变量名。
+
+
+
+# 组件的ref
+
+
+
+
+
 # 依赖注入

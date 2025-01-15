@@ -8,6 +8,7 @@ console.log("attr", attr)
 <template>
   <div class="m-2 p-8 border-dotted border-2 border-sky-500" v-bind="$attrs">
     attr
+    <div v-bind="$slots">has $slots?</div>
   </div>
   <div @click="$attrs.onClick" :style="$attrs.style">attr`s second div</div>
 </template>
