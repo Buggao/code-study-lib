@@ -1,0 +1,111 @@
+{
+  "students": [
+    {
+      "name": "李德高",
+      "age": 14,
+      "gender": "male",
+      "phone": 15938315333,
+      "email": "huailine@gmail.com",
+      "address": "江苏省盐城市",
+      "profile": "只当第二",
+      "id": "2"
+    },
+    {
+      "name": "张兴艺",
+      "age": 14,
+      "gender": "male",
+      "phone": 15938315333,
+      "email": "huailine@gmail.com",
+      "address": "河南省新乡",
+      "profile": "虚怀若谷",
+      "id": "4"
+    },
+    {
+      "name": "裴华",
+      "age": 15,
+      "gender": "male",
+      "phone": 13837944627,
+      "email": "huailine@gmail.com",
+      "address": "浙江省绍兴市",
+      "profile": "路漫漫其修远兮",
+      "id": "3"
+    },
+    {
+      "id": "1724599552008",
+      "name": "裴钱",
+      "age": "23",
+      "gender": "female",
+      "phone": "02408170226",
+      "email": "gotton@foxmail.com",
+      "education": "自学",
+      "school": "无",
+      "address": "桐叶州莲花福地",
+      "profession": "武者",
+      "bio": "i want sleep"
+    },
+    {
+      "id": 1725104316908,
+      "name": "高得统",
+      "age": "23",
+      "gender": "male",
+      "phone": "15938315839",
+      "email": "gotton@foxmail.com",
+      "education": "本科",
+      "school": "商丘工学院",
+      "address": "上海市宝山区",
+      "profession": "程序员",
+      "bio": "呜呜呜呜呜呜呜呜呜呜呜"
+    },
+    {
+      "id": 1725104664238,
+      "name": "宁姚",
+      "age": "32",
+      "gender": "female",
+      "phone": "02408170226",
+      "email": "gotton@foxmail.com",
+      "education": "本科",
+      "school": "剑气长城私塾",
+      "address": "剑气长城",
+      "profession": "剑修",
+      "bio": "哈哈哈哈哈哈哈好玩的hi哦2去热饭都去娃儿还是短发从卡组SH都【去啊WGHD1"
+    },
+    {
+      "id": 1725106040693,
+      "name": "陈平安",
+      "age": "32",
+      "gender": "male",
+      "phone": "02408170226",
+      "email": "gotton@foxmail.com",
+      "education": "本科",
+      "school": "鹿鸣书院",
+      "address": "宝瓶洲落魄山",
+      "profession": "剑客",
+      "bio": "莫向外求"
+    },
+    {
+      "id": 1731124184339,
+      "name": "王依贝",
+      "age": "21",
+      "gender": "female",
+      "phone": "idontknow",
+      "email": "idontknow@qq.com",
+      "education": "中学",
+      "school": "郑州某中专",
+      "address": "河南省许昌市禹州市",
+      "profession": "待业",
+      "bio": "滚"
+    }
+  ],
+  "classes": [
+    {
+      "id": "1",
+      "name": "浩然一班",
+      "description": "这是一个向上的班级"
+    },
+    {
+      "id": "2",
+      "name": "青冥一班",
+      "description": "青冥天下唯我独尊"
+    }
+  ]
+}

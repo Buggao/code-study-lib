@@ -1,0 +1,30 @@
+.logo {
+  background-image: url("../assets/nav-logo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.coder-station-app-container {
+  min-height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-rows: 1fr 10fr 2fr;
+}
+
+.coder-station-app-header{
+  background-color: #001529;
+  grid-area: header;
+  display: flex;
+  align-items: center;
+}
+
+.coder-station-app-footer {
+  text-align: center; 
+}

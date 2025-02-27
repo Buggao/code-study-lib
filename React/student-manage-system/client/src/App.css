@@ -1,0 +1,11 @@
+* {
+  border: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box
+}
+
+.main-content-container {
+  padding: 5%;
+  padding-bottom: 0;
+}
