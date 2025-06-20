@@ -7,3 +7,4 @@ node_modules
 Vue/vue3-reactivity/packages/*
 !Vue/vue3-reactivity/packages/runtime-dom
 **/.history
+dist
