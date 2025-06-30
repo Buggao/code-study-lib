@@ -23,3 +23,26 @@ class Knight extends Chess {
     return true;
   }
 }
+
+interface stringType {
+  [key:string]: string
+}
+
+interface numberType {
+  [key: number]: string | number
+}
+
+let myNumberType: numberType = {
+  10: "123",
+  0: "34",
+  12: 30
+}
+
+let testArray: numberType = ["name", "value"]
+
+console.log("testArray", testArray);
+
+let myStringType: stringType = {
+  name: "1",
+  value: "123"
+}
