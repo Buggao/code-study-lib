@@ -11,12 +11,15 @@
 </script>
 
 <template>
-  <h1>vue</h1>
-  <input type="text" v-model="showData" placeholder="input name">
-  <button @click="showList.push({name: showData, age: 23})">add List</button>
-  <div v-for="(item,index) in showList"> {{index }} : {{ item.name }}- {{ item.age }}</div>
-  <div>list length: {{ listLength }}</div>
-  <LifeCycle/>
+  <nav>
+    <RouterLink to="/user/123" class="mr-2">Go to user1</RouterLink>
+    <RouterLink to="/user/456" class="mr-2">Go to user2</RouterLink>
+    <RouterLink to="/home">to home</RouterLink>
+  </nav>
+  <div class="w-100 h-100 border-solid border-amber-5">
+    <RouterView />
+
+  </div>
 </template>
 
 <style scoped>

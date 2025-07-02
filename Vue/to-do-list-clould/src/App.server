@@ -1,41 +1,47 @@
 <script setup lang="ts">
-import { ref, watch, provide } from 'vue'
+import { ref, watch, provide, onMounted } from 'vue'
 // 添加类型声明以解决 TypeScript 报错
 import TaskInput from './components/TaskInput.vue'
 import TaskList from './components/TaskList.vue'
 import ToDoFooter from "./components/ToDoFooter.vue"
+import axios from 'axios'
 import type { Todo } from './types'
 
-const show = ref(true)
-
-setInterval(() => {
-  show.value = !show.value;
-}, 1000);
-
-const todoList = ref<Todo[]>([
-  {
-    name: "Learn Vue",
-    isCompleted: false,
-    id: 1
-  },
-  {
-    name: "Learn Vuex",
-    isCompleted: false,
-    id: 2
+const todoList = ref<Todo[]>([])
+const getToDoList = async () => {
+  try {
+    const { data } = await axios.get("https://gyl48cw104.hzh.sealos.run/get-list");
+    console.log("response is", data )
+    todoList.value = data.data
+  } catch (error) {
+    console.error('Error fetching data:', error)
   }
-])
-
+}
 
 const addToDoItem = async (taskName:string) => {
-  todoList.value.push({
+  try {
+    const { data } = await axios.post("https://gyl48cw104.hzh.sealos.run/add-todo", {
       name: taskName,
       isCompleted: false,
       id: randomNumber()
-    })
+    });
+    console.log("response is", data )
+    todoList.value.push(data.data)
+  } catch (error) {
+    console.error('add to do failed', error)
+  }
 }
 
 const delToDoItem = async (id:number) => {
-  todoList.value = todoList.value.filter(item => item.id !== id)
+  try {
+    const { data } = await axios.post("https://gyl48cw104.hzh.sealos.run/del-todo", {
+      id: id
+    });
+    console.log("response is", data )
+    todoList.value = todoList.value.filter(item => item.id !== id)
+  } catch (error) {
+    console.error('delete to do failed', error)
+  }
 }
 const randomNumber = () => Math.floor(Math.random() * 100000);
 const addTask = (taskName:string) => {
@@ -64,42 +70,17 @@ watch(todoList, (newValue, oldValue) => {
 }, {deep: true});
 
 
+onMounted(() => {
+  getToDoList();
+});
 </script>
 
 <template>
-  <h1 class="no-select" >Today`s To Do List</h1>
+  <h1>Today`s To Do List</h1>
   <TaskInput @add-task="addTask" />
   <TaskList :todo-list="todoList"></TaskList>
   <hr />
   <ToDoFooter :todo-list="todoList" @clear-finished-tasks="clearFinishedTasks" @select-all-task="selectAll"/>
-  <Transition>
-    <div v-show="show" class="warning-bg">
-      <h2 class="inner">今天有完成任务么</h2>
-    </div>
-  </Transition>
 </template>
-
-<style>
-.no-select {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
-}
-.warning-bg {
-  width: 10rem;
-  background-color: rgb(222, 84, 84);
-}
-
-.v-enter-active .inner,
-.v-leave-active .inner {
-  transition: all 0.3s ease-in-out;
-}
-.v-enter-from .inner,
-.v-leave-to .inner{
-  transform: translateX(-30px);
-  opacity: 0;
-}
-</style>
 
 
