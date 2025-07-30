@@ -1,12 +1,21 @@
-interface FirstClass {
-    name: string
+class MyObj {
+    private counter: number = 0;
+    constructor(public name: string) {
+        this.name = name;
+        this.counter++;
+    }
+
+    public getCounter() {
+        return this.counter;
+    }
 }
 
-let myObj1: FirstClass = {
-    name: "Tone",
-    age: 23
-}
+let myObj1 = new MyObj("Tone");
+let myobj2 = new MyObj("Jack");
 
-interface FirstClass {
-    age: number
+function showLog<T>(a:T[]):T{
+    console.log("a is", a);
+    return a[1];
 }
+showLog(["123", 456, {}, []]);
+console.log(myObj1.getCounter());

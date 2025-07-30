@@ -1,9 +1,12 @@
 <script setup>
-import { useAttrs } from 'vue';
+import { useAttrs, onBeforeUpdate } from 'vue';
 const attrs = useAttrs();
 const handleClick = () => {
   attrs.car.value += "0"
 }
+onBeforeUpdate(() => {
+  console.log("in base componetn beforeDate")
+}) 
 </script>
 
 <template>
@@ -14,3 +17,9 @@ const handleClick = () => {
     <div v-for="(item,name) in $attrs" :key="name" >{{name}}: {{ item }}</div>
   </div>
 </template>
+
+<style>
+.grandson {
+  border: 1px solid red;
+}
+</style>
