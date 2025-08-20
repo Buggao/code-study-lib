@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>virtualList</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        #container {
+            margin: auto;
+            height: 600px;
+            width: 400px;
+            background-color: pink;
+            overflow: scroll;
+            position: relative;
+        }
+        #list {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .item {
+            height: 60px;
+            border: 1px solid;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="space"></div>
+        <div id="list">
+        </div>
+    </div>
+    <script>
+        const container = document.getElementById('container');
+        const listContainer = document.getElementById('list');
+        const spaceContainer = document.getElementById('space');
+        let listData = Array.from({length: 100}, (_,index) => ({
+            id: index,
+            text: `列表项${index}`
+        }))
+        const virtualListOptions = {
+            itemHeight: 60,
+            visibleCount: 12
+        }
+        container.addEventListener('scroll', (e) => {
+            listContainer.style.transform = `translateY(${e.target.scrollTop}px)`;
+            let startIndex = Math.floor(e.target.scrollTop / virtualListOptions.itemHeight);
+            let endIndex = startIndex + virtualListOptions.visibleCount;
+            renderListData = listData.slice(startIndex, endIndex);
+            console.log(renderListData)
+            renderListHTML();
+        })
+        spaceContainer.style.height = `${listData.length * virtualListOptions.itemHeight}px`
+        let renderListData = listData.slice(0, virtualListOptions.visibleCount);
+
+        function renderListHTML() {    
+            listContainer.innerHTML = '';    
+            renderListData.forEach(item => {
+                const listItem = document.createElement('div')
+                listItem.textContent = item.text
+                listItem.dataset.id = item.id
+                listItem.classList.add('item')
+                listItem.addEventListener('click', (e) => {
+                    console.log(e.target.dataset.id)
+                })
+                listContainer.appendChild(listItem);
+            })
+        }
+
+        renderListHTML();
+    </script>
+</body>
+</html>

@@ -3,10 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="module" src="./main.js"></script>
-  <title>Module</title>
+  <title>Document</title>
 </head>
 <body>
-  <h1>ESM</h1>
+  <h1>I am Html123</h1>
+  <script>
+    setTimeout(() => {
+      console.log(Date.now())
+      // 模拟长任务
+      const start = Date.now();
+      while (Date.now() - start < 2000) {} // 阻塞2秒
+    }, 2000);
+  </script>
+  <h1>after long task456</h1>
+  <script>
+    // 模拟长任务
+    const start = Date.now();
+    while (Date.now() - start < 2000) {} // 阻塞2秒
+    console.log(Date.now())
+  </script>
 </body>
 </html>
