@@ -8,4 +8,4 @@ Vue/vue3-reactivity/packages/*
 !Vue/vue3-reactivity/packages/runtime-dom
 **/.history
 dist
-miniprogram_npm 
+miniprogram_npm
