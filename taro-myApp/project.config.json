@@ -4,12 +4,23 @@
   "description": "学习taro",
   "appid": "touristappid",
   "setting": {
+    "skylineRenderEnable": true,
     "urlCheck": true,
     "es6": false,
     "enhance": false,
     "compileHotReLoad": false,
     "postcss": false,
     "minified": false
+  },
+  "renderer": "skyline",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "defaultContentBox": true,
+      "defaultFontSize": 16,
+      "disableOpponentNativeRender": false,
+      "sdkVersion": "3.0.0"
+    }
   },
   "compileType": "miniprogram"
 }

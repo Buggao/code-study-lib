@@ -29,6 +29,7 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
     framework: 'vue3',
     compiler: 'vite',
     mini: {
+      skyline: true,
       postcss: {
         pxtransform: {
           enable: true,
